@@ -1,16 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 
-  <title>ES8 Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <script src="//unpkg.com/systemjs@0.19.47/dist/system.js"></script>
+    <link href="main.css" rel="stylesheet">
+
 </head>
 
 <body>
-  <script src="config.js"></script>
+
+    <table class="height: 100% min-height: 100vh" class="table" id="daftar-mapel">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">hari</th>
+                <th scope="col">jam ke</th>
+                <th scope="col">kelas</th>
+                <th scope="col">mapel</th>
+                <th scope="col">nama guru</th>
+                <th scope="col" colspan="2">waktu</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script type="module">
+        import { ambilDaftarMapel, formatAngka } from './functions.js';
+
+        $(document).ready(async function () {
+            let elemenDaftar = $("#daftar-mapel > tbody");
+            let daftarMapel = await ambilDaftarMapel();
+            let nomor = 1;
+
+            daftarMapel.forEach((data) => {
+                elemenDaftar.append(
+                    '<tr>' +
+                    '<th>' + nomor + '</th>' +
+                    '<td>' + data.hari + '</td>' +
+                    '<td>' + data.jamke + '</td>' +
+                    '<td>' + data.kelas + '</td>' +
+                    '<td>' + data.Mapel + '</td>' +
+                    '<td>' + data.namaguru + '</td>' +
+                    '<td>' + data.waktu + '</td>' +
+                    '<td class="stack-up">' +
+                    ' <a href="#" class="btn btn-warning link-ubah"  data="' +
+                    data.id +
+                    '">ubah</a> ' +
+                    ' <button class="btn btn-danger tombol-hapus" data="' +
+                    data.id +
+                    '">Hapus</button>' + '</td>' +
+                    '</tr>'
+                );
+                nomor = nomor + 1;
+            });
+
+            $('.tombol-hapus').click(async function () {
+                await hapusAbsensi($(this).attr('data'));
+                location.reload();
+            })
+
+            $('.link-ubah').click(async function () {
+                window.location.replace('ubah.html?docId=' + $(this).attr('data'));
+            })
+
+            $('#loader').hide();
+
+        });
+    </script>
+
+
 </body>
+
 </html>
